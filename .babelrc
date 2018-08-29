@@ -1,0 +1,17 @@
+{
+    "presets": [
+        "env",
+        "react"
+    ],
+    "plugins": [
+        "transform-object-rest-spread",
+        ["react-css-modules", {
+            "filetypes": {
+                ".scss": {
+                  "syntax": "postcss-scss"
+                }
+              },
+              "generateScopedName": "[name]_[local]_[hash:base64:5]"
+        }]
+    ]
+}

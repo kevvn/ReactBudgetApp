@@ -1,0 +1,10 @@
+.git
+.idea
+.env
+*.swp
+.DS_Store
+sonar-project.properties
+
+/node_modules
+/npm-debug.log
+/build
