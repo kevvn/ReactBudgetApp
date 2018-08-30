@@ -1,11 +1,8 @@
 import { combineReducers } from 'redux';
 // import reducers from pages here
-import { dataFetch, dataIsLoading, dataHasErrored, sortData } from '../views/home/homeReducers';
+import { tabSelected } from '../components/Header/HeaderReducer'
 
 export default combineReducers({
   // list all imported reducers here
-  dataFetch,
-  dataIsLoading,
-  dataHasErrored,
-  sortData,
+  tabSelected
 });

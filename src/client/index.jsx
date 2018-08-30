@@ -3,6 +3,9 @@ import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import { serviceWorker } from '@core/lib-react/server';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+
 import configureStore from '../shared/store/configureStore';
 import App from '../shared/App';
 
@@ -14,11 +17,14 @@ delete window.__PRELOADED_STATE__;
 /* eslint-enable no-underscore-dangle */
 
 const store = configureStore(preloadedState);
+const theme = createMuiTheme({});
 
 hydrate(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <App />
+      </MuiThemeProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root'),
