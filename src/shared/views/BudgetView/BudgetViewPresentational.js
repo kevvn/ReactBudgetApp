@@ -2,28 +2,16 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import Modal from '@material-ui/core/Modal';
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
+import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 class BudgetView extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       rows: [],
-      open: false
+      open: false,
+      selectedCategory: ''
     }
     this.addToBudget = this.addToBudget.bind(this);
   }
@@ -99,14 +87,42 @@ class BudgetView extends React.Component {
           open={this.state.open}
           onClose={() => {this.setState({open: false})}}
         >
-          <div style={getModalStyle()} style={{
-    position: 'absolute',
-    width: 50,
-    backgroundColor: 'white',
-    boxShadow: 5,
-    padding: 4,
-  }}>
-            Text
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+          }}>
+            <Card style={{backgroundColor: '#E0E0E0'}}>
+              <div style={{margin: '.125em'}}>
+              <TextField
+                id="select-category"
+                select
+                label="Select"
+                style={{
+                  marginLeft: 4,
+                  marginRight: 4,
+                  width: 200,
+                }}
+                value={this.state.selectedCategory}
+                onChange={(e) => {this.setState({selectedCategory: e.target.value})}}
+                SelectProps={{
+                  MenuProps: {
+                    style: {width: 200},
+                  },
+                }}
+                helperText="Please select a category"
+                margin="normal"
+              >
+                {[{label: 'Groceries',value: 0},].map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+                
+              </TextField>
+              <Button variant='contained' fullWidth='true' color='primary'>Done</Button>
+              </div>
+            </Card>
           </div>
         </Modal>
       </div>
