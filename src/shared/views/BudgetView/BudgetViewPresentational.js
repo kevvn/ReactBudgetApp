@@ -14,11 +14,21 @@ class BudgetView extends React.Component {
       selectedCategory: ''
     }
     this.addToBudget = this.addToBudget.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
   addToBudget(category,item,amount) {
-    let newRow = this.state.rows;
-    newRow.push({item,amount})
-    this.setState({rows: newRow})
+    let thing = {item, amount};
+    let {rows} = this.state;
+    rows.push(thing)
+    this.setState({rows});
+  }
+
+  handleChange(name){
+    event => {
+      this.setState({
+        [name]: event.target.value
+      })
+    }
   }
 
   componentDidMount(){
@@ -74,6 +84,7 @@ class BudgetView extends React.Component {
       <div>
         BudgetView
         {this.state.rows.map((element)=>{
+          console.log(element)
           return (
             <div> Item {element.item} Amount {element.amount} </div>
           )
@@ -97,7 +108,7 @@ class BudgetView extends React.Component {
               <TextField
                 id="select-category"
                 select
-                label="Select"
+                label="Category"
                 style={{
                   marginLeft: 4,
                   marginRight: 4,
@@ -113,14 +124,25 @@ class BudgetView extends React.Component {
                 helperText="Please select a category"
                 margin="normal"
               >
-                {[{label: 'Groceries',value: 0},].map(option => (
+                {[{label: 'Groceries',value: 'Groceries'},].map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
                 
               </TextField>
-              <Button variant='contained' fullWidth='true' color='primary'>Done</Button>
+              <TextField
+                id="number"
+                label="Budgeted Amount"
+                value={this.state.amount}
+                onChange={(e) => this.setState({amount: e.target.value})}
+                type="number"
+                
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <Button variant='contained' onClick={() => this.addToBudget("Groceries",this.state.selectedCategory,this.state.amount)} fullWidth={true} color='primary'>Done</Button>
               </div>
             </Card>
           </div>
