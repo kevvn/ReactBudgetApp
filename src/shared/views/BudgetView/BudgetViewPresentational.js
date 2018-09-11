@@ -5,35 +5,42 @@ import Modal from '@material-ui/core/Modal';
 import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import NestedListView from '../../components/NestedListView';
 class BudgetView extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      rows: [],
+      rows: {},
       open: false,
-      selectedCategory: ''
+      selectedCategory: '',
+      inputtedItem: ''
     }
     this.addToBudget = this.addToBudget.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    // this.handleChange = this.handleChange.bind(this);
   }
   addToBudget(category,item,amount) {
     let thing = {item, amount};
     let {rows} = this.state;
-    rows.push(thing)
+    if(!rows[category]){
+      rows = Object.assign({[category]: []},rows)
+    }
+    console.log(rows)
+    rows[category].push(thing)
+    localStorage.setItem('rows',JSON.stringify(rows));
     this.setState({rows});
   }
 
-  handleChange(name){
-    event => {
-      this.setState({
-        [name]: event.target.value
-      })
-    }
-  }
+  // handleChange(name){
+  //   event => {
+  //     this.setState({
+  //       [name]: event.target.value
+  //     })
+  //   }
+  // }
 
   componentDidMount(){
-    var rows = [];
-    var that = this;
+    this.setState({rows: JSON.parse(localStorage.getItem('rows')) || [] });
     if(typeof window !== 'undefined'){
       
 
@@ -83,12 +90,8 @@ class BudgetView extends React.Component {
     return(
       <div>
         BudgetView
-        {this.state.rows.map((element)=>{
-          console.log(element)
-          return (
-            <div> Item {element.item} Amount {element.amount} </div>
-          )
-        })}
+        <NestedListView data={this.state.rows} />
+
         <Button onClick={()=>this.setState({open: true})} variant="fab" color="primary" aria-label="Add">
           <AddIcon />
         </Button>
@@ -124,13 +127,24 @@ class BudgetView extends React.Component {
                 helperText="Please select a category"
                 margin="normal"
               >
-                {[{label: 'Groceries',value: 'Groceries'},].map(option => (
+                {[{label: 'Groceries',value: 'Groceries'},{label: 'Miscelaneous',value: 'Miscelaneous'}].map(option => (
                   <MenuItem key={option.value} value={option.value}>
                     {option.label}
                   </MenuItem>
                 ))}
                 
               </TextField>
+              <TextField
+                id="item"
+                label="Item"
+                value={this.state.inputtedItem}
+                onChange={(e) => this.setState({inputtedItem: e.target.value})}
+                type="string"
+                
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
               <TextField
                 id="number"
                 label="Budgeted Amount"
@@ -142,7 +156,7 @@ class BudgetView extends React.Component {
                   shrink: true,
                 }}
               />
-              <Button variant='contained' onClick={() => this.addToBudget("Groceries",this.state.selectedCategory,this.state.amount)} fullWidth={true} color='primary'>Done</Button>
+              <Button variant='contained' onClick={() => this.addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)} fullWidth={true} color='primary'>Done</Button>
               </div>
             </Card>
           </div>

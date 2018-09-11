@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from './Router';
 import Header from './components/Header';
-import Footer from './components/Footer';
+// import Footer from './components/Footer';
 // import './App.scss';
 
 const App = () => (

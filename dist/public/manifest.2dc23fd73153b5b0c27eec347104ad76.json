@@ -1,0 +1,55 @@
+{
+  "icons": [
+    {
+      "src": "/icon_1024x1024.c24772405c76b2e8f1b5b8eebc46a921.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_640x640.530f865a559874ef8b16013b0d957970.png",
+      "sizes": "640x640",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_512x512.673aa76f09c77c04a5cceeb4417ff5b7.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_384x384.2cc9d5235ef50a2fdea6e00c31138676.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_256x256.1d1d6950460f6169ba7aaa73ec6302ad.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_192x192.9c8fc687d3cd3afebf5f49f1b50866ec.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_128x128.bf6f12ae459db466aef2a4ca4d4042d9.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon_96x96.39a7b0f81719fd2cd2003b103512c82a.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "Macy's reactive platform",
+  "short_name": "MacysApp",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": "/",
+  "description": "Macy's reactive platform",
+  "background_color": "#375360",
+  "theme_color": "#cc0000",
+  "options": {
+    "fingerprints": false
+  }
+}
