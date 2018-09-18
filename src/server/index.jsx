@@ -7,11 +7,7 @@ import { template } from '@core/lib-react/server';
 import App from '../shared/App';
 import configureStore from '../shared/store/configureStore';
 import { MockRouting } from '../../mocks/index';
-
-// Material UI SSR
-import { SheetsRegistry } from 'react-jss/lib/jss';
-import JssProvider from 'react-jss/lib/JssProvider';
-import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from '@material-ui/core/styles';
+var compression = require('compression')
 
 /* assets manifest gets generated at build time */
 // eslint-disable-next-line import/no-dynamic-require
@@ -33,7 +29,7 @@ if (process.env.NODE_ENV === 'development' && process.env.RAZZLE_MOCK_SERVICE_EN
 
 // Handle all UI routes through React-router for single-page application
 const store = configureStore({tabSelected: 0});
-
+MarsServer.use(compression())
 MarsServer.get('/static/*', (req, res) => {
   const path = `public/static/${req.params[0]}`;
   if (req.params[0].indexOf('.css') > 0) {
@@ -56,32 +52,22 @@ MarsServer.get('/static/*', (req, res) => {
     // *** Assign inital page title for application here, can be updated client-side
     const htmlPageTitle = 'Mars Application';
 
-    const sheetsRegistry = new SheetsRegistry();
-    const generateClassName = createGenerateClassName();
-
-
     // The ESLint rules (react/jsx-indent) and (function-paren-newline) conflict with each other when JSX is used as a function param
     // (i.e. when using renderToString). The issue can be circumvented using double-parens, but double-parens are cleaned up via prettier
     // prettier-ignore
     const markup = renderToString((
       <Provider store={store}>
         <StaticRouter context={context} location={req.url}>
-          <JssProvider generateClassName={generateClassName} registry={sheetsRegistry}>
-            <MuiThemeProvider theme={createMuiTheme()} sheetsManager={new Map()}>
-              <App />
-            </MuiThemeProvider>
-          </JssProvider>
+          <App />
         </StaticRouter>
       </Provider>
 
     ));
 
-    const css = sheetsRegistry.toString();
-
     if (context.url) {
       res.redirect(context.url);
     } else {
-      res.status(200).send(template(htmlPageTitle, assets.client.css, assets.client.js, preloadedState, markup,css));
+      res.status(200).send(template(htmlPageTitle, assets.client.css, assets.client.js, preloadedState, markup));
     }
   }
 });

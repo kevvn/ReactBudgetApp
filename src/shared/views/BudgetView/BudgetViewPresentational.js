@@ -1,10 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import AddIcon from '@material-ui/icons/Add';
-import Modal from '@material-ui/core/Modal';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import NestedListView from '../../components/NestedListView';
 class BudgetView extends React.Component {
@@ -25,19 +19,11 @@ class BudgetView extends React.Component {
     if(!rows[category]){
       rows = Object.assign({[category]: []},rows)
     }
-    console.log(rows)
     rows[category].push(thing)
     localStorage.setItem('rows',JSON.stringify(rows));
     this.setState({rows});
   }
 
-  // handleChange(name){
-  //   event => {
-  //     this.setState({
-  //       [name]: event.target.value
-  //     })
-  //   }
-  // }
 
   componentDidMount(){
     this.setState({rows: JSON.parse(localStorage.getItem('rows')) || [] });
@@ -92,75 +78,55 @@ class BudgetView extends React.Component {
         BudgetView
         <NestedListView data={this.state.rows} />
 
-        <Button onClick={()=>this.setState({open: true})} variant="fab" color="primary" aria-label="Add">
-          <AddIcon />
-        </Button>
-        <Modal
+        <button onClick={()=>this.setState({open: true})}>
+          +
+        </button>
+        {(this.state.open) ?
+        <div
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={() => {this.setState({open: false})}}
         >
           <div style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
           }}>
-            <Card style={{backgroundColor: '#E0E0E0'}}>
+            <div style={{backgroundColor: '#E0E0E0'}}>
               <div style={{margin: '.125em'}}>
-              <TextField
-                id="select-category"
-                select
-                label="Category"
-                style={{
-                  marginLeft: 4,
-                  marginRight: 4,
-                  width: 200,
-                }}
-                value={this.state.selectedCategory}
-                onChange={(e) => {this.setState({selectedCategory: e.target.value})}}
-                SelectProps={{
-                  MenuProps: {
-                    style: {width: 200},
-                  },
-                }}
-                helperText="Please select a category"
-                margin="normal"
-              >
-                {[{label: 'Groceries',value: 'Groceries'},{label: 'Miscelaneous',value: 'Miscelaneous'}].map(option => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-                
-              </TextField>
-              <TextField
-                id="item"
-                label="Item"
-                value={this.state.inputtedItem}
-                onChange={(e) => this.setState({inputtedItem: e.target.value})}
-                type="string"
-                
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <TextField
-                id="number"
-                label="Budgeted Amount"
-                value={this.state.amount}
-                onChange={(e) => this.setState({amount: e.target.value})}
-                type="number"
-                
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-              <Button variant='contained' onClick={() => this.addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)} fullWidth={true} color='primary'>Done</Button>
+                <form onSubmit={() => {this.setState({open: false});this.addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)}}>
+                  <select
+                    id="select-category"
+                    label="Category"
+                  >
+                    {[{label: 'Groceries',value: 'Groceries'},{label: 'Miscellaneous',value: 'Miscellaneous'}].map(option => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                    
+                  </select>
+                  <input
+                    id="item"
+                    label="Item"
+                    value={this.state.inputtedItem}
+                    onChange={(e) => this.setState({inputtedItem: e.target.value})}
+                    type="text"
+                    placeholder={'Item'}
+                  />
+                  <input
+                    id="number"
+                    label="Budgeted Amount"
+                    value={this.state.amount}
+                    placeholder={'Amount'}
+                    onChange={(e) => this.setState({amount: e.target.value})}
+                    type="number"
+                  />
+                  <input type={'submit'}/>
+                </form>
               </div>
-            </Card>
+            </div>
           </div>
-        </Modal>
+        </div> : null}
       </div>
     )
   }
