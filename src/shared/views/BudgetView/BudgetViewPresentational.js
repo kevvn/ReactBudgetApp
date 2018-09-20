@@ -5,23 +5,12 @@ class BudgetView extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      rows: {},
       open: false,
       selectedCategory: '',
       inputtedItem: ''
     }
-    this.addToBudget = this.addToBudget.bind(this);
     // this.handleChange = this.handleChange.bind(this);
-  }
-  addToBudget(category,item,amount) {
-    let thing = {item, amount};
-    let {rows} = this.state;
-    if(!rows[category]){
-      rows = Object.assign({[category]: []},rows)
-    }
-    rows[category].push(thing)
-    localStorage.setItem('rows',JSON.stringify(rows));
-    this.setState({rows});
+
   }
 
 
@@ -72,13 +61,14 @@ class BudgetView extends React.Component {
 
   }
   render(){
-    console.log(this.state)
+    const { addToBudget } = this.props;
+    console.log(this.props)
     return(
       <div>
         BudgetView
-        <NestedListView data={this.state.rows} />
+        <NestedListView data={''} />
 
-        <button onClick={()=>this.setState({open: true})}>
+        <button onClick={()=>this.setState({open: true})}>  
           +
         </button>
         {(this.state.open) ?
@@ -93,7 +83,7 @@ class BudgetView extends React.Component {
           }}>
             <div style={{backgroundColor: '#E0E0E0'}}>
               <div style={{margin: '.125em'}}>
-                <form onSubmit={() => {this.setState({open: false});this.addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)}}>
+                <form onSubmit={() => {this.setState({open: false}); addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)}}>
                   <select
                     id="select-category"
                     label="Category"

@@ -5,3 +5,23 @@ export const chooseTab = tabValue => ({
     tabValue,
   });
   
+
+export const addToBudget = (category,item,amount) =>{
+  
+  let valid = true;
+
+  valid = (typeof amount === 'number');
+  valid = (typeof item === 'string');
+  valid = (typeof category === 'string');
+  if(valid){
+    return {
+      type: 'SUBMIT_BUDGET_DATA_SUCCESS',
+      data: {category,item, amount}
+    };
+  }
+
+  return {
+    type: 'SUBMIT_BUDGET_DATA_FAIL',
+    rows: []
+  }
+}
