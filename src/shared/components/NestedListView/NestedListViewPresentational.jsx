@@ -1,11 +1,15 @@
 import React from 'react';
 const NestedListView = (props) =>{
 
-  let {data} = props;
+  let {budgetData} = props;
+  console.log(props)
+  if(budgetData === undefined){
+    budgetData = [];
+  }
   return (
     <div>
-      {Object.keys(data).map(items => {
-        let currentCategory = data[items];
+      {Object.keys(budgetData).map(items => {
+        let currentCategory = budgetData[items];
         let amount = 0;
         return(<ul>
           {items}

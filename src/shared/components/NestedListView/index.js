@@ -1,3 +1,3 @@
-import NestedListView from './NestedListView';
+import NestedListViewContainer from './NestedListViewContainer';
 
-export default NestedListView;
+export default NestedListViewContainer;

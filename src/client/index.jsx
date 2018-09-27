@@ -4,7 +4,6 @@ import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import { serviceWorker } from '@core/lib-react/server';
 
-
 import configureStore from '../shared/store/configureStore';
 import App from '../shared/App';
 
@@ -15,9 +14,34 @@ const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
 /* eslint-enable no-underscore-dangle */
 
-const store = configureStore(preloadedState);
 
+const loadState = () => {
+  try{
+    const serializedState = localStorage.getItem('state');
+    if(serializedState === null){
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  }catch (err){
+    return undefined;
+  }
+}
 
+const saveState = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state',serializedState);
+  } catch (err){
+    console.error(err);
+  }
+}
+const store = configureStore(loadState());
+
+store.subscribe(() =>{
+  saveState({
+    budgetData: store.getState().budgetData
+  })
+})
 hydrate(
   <Provider store={store}>
     <BrowserRouter>

@@ -1,13 +1,14 @@
 import React from 'react';
 
-import NestedListView from '../../components/NestedListView';
+import NestedListViewContainer from '../../components/NestedListView';
 class BudgetView extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       open: false,
-      selectedCategory: '',
-      inputtedItem: ''
+      selectedCategory: 'Groceries',
+      inputtedItem: '',
+      amount: 0
     }
     // this.handleChange = this.handleChange.bind(this);
 
@@ -15,7 +16,6 @@ class BudgetView extends React.Component {
 
 
   componentDidMount(){
-    this.setState({rows: JSON.parse(localStorage.getItem('rows')) || [] });
     if(typeof window !== 'undefined'){
       
 
@@ -62,11 +62,11 @@ class BudgetView extends React.Component {
   }
   render(){
     const { addToBudget } = this.props;
-    console.log(this.props)
+    console.log(this.state)
     return(
       <div>
         BudgetView
-        <NestedListView data={''} />
+        <NestedListViewContainer />
 
         <button onClick={()=>this.setState({open: true})}>  
           +
@@ -80,13 +80,18 @@ class BudgetView extends React.Component {
             position: 'absolute',
             top: '50%',
             left: '50%',
+            height: '200px',
+            width: '300px',
+            margin: '-100px 0 0 -150px'
           }}>
             <div style={{backgroundColor: '#E0E0E0'}}>
-              <div style={{margin: '.125em'}}>
-                <form onSubmit={() => {this.setState({open: false}); addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)}}>
+              <div >
+                <form >
                   <select
                     id="select-category"
                     label="Category"
+                    value={this.state.selectedCategory}
+                    onChange={(e)=>this.setState({selectedCategory: e.target.value})}
                   >
                     {[{label: 'Groceries',value: 'Groceries'},{label: 'Miscellaneous',value: 'Miscellaneous'}].map(option => (
                       <option key={option.value} value={option.value}>
@@ -111,7 +116,7 @@ class BudgetView extends React.Component {
                     onChange={(e) => this.setState({amount: e.target.value})}
                     type="number"
                   />
-                  <input type={'submit'}/>
+                  <input type={'button'} value={'Submit'} onClick={() => {this.setState({open: false}); addToBudget(this.state.selectedCategory,this.state.inputtedItem,this.state.amount)}}/>
                 </form>
               </div>
             </div>
